@@ -6,11 +6,17 @@ namespace SimpleSAML\Slate\XML;
 
 use DOMElement;
 use SimpleSAML\CAS\Assert\Assert;
-use SimpleSAML\CAS\Constants as C;
+use SimpleSAML\CAS\XML\AbstractCasElement;
+use SimpleSAML\CAS\XML\AuthenticationDate;
+use SimpleSAML\CAS\XML\IsFromNewLogin;
+use SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed;
+use SimpleSAML\Slate\Constants as C;
 use SimpleSAML\XML\ExtendableElementTrait;
 use SimpleSAML\XMLSchema\Exception\InvalidDOMElementException;
 use SimpleSAML\XMLSchema\Exception\MissingElementException;
 use SimpleSAML\XMLSchema\XML\Constants\NS;
+
+use function array_pop;
 
 /**
  * Class for CAS attributes
@@ -98,26 +104,26 @@ final class Attributes extends AbstractCasElement
         Assert::same($xml->namespaceURI, static::getNamespaceURI(), InvalidDOMElementException::class);
 
         $authenticationDate = AuthenticationDate::getChildrenOfClass($xml);
-        Assert::count(
+        Assert::maxCount(
             $authenticationDate,
             1,
-            'Exactly one <cas:authenticationDate> must be specified.',
+            'A maximum of one <cas:authenticationDate> must be specified.',
             MissingElementException::class,
         );
 
         $longTermAuthenticationRequestTokenUsed = LongTermAuthenticationRequestTokenUsed::getChildrenOfClass($xml);
-        Assert::count(
+        Assert::maxCount(
             $longTermAuthenticationRequestTokenUsed,
             1,
-            'Exactly one <cas:longTermAuthenticationRequestTokenUsed> must be specified.',
+            'A maximum of one <cas:longTermAuthenticationRequestTokenUsed> must be specified.',
             MissingElementException::class,
         );
 
         $isFromNewLogin = IsFromNewLogin::getChildrenOfClass($xml);
-        Assert::count(
+        Assert::maxCount(
             $isFromNewLogin,
             1,
-            'Exactly least one <cas:isFromNewLogin> must be specified.',
+            'A maximum of one <cas:isFromNewLogin> must be specified.',
             MissingElementException::class,
         );
 

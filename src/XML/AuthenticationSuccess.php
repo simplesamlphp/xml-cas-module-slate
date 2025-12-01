@@ -6,10 +6,14 @@ namespace SimpleSAML\Slate\XML;
 
 use DOMElement;
 use SimpleSAML\CAS\Assert\Assert;
+use SimpleSAML\CAS\XML\AbstractResponse;
+use SimpleSAML\CAS\XML\Proxies;
+use SimpleSAML\CAS\XML\ProxyGrantingTicket;
+use SimpleSAML\CAS\XML\User;
+use SimpleSAML\Slate\Constants as C;
 use SimpleSAML\XML\ExtendableElementTrait;
 use SimpleSAML\XMLSchema\Exception\InvalidDOMElementException;
 use SimpleSAML\XMLSchema\Exception\MissingElementException;
-use SimpleSAML\XMLSchema\XML\Constants\NS;
 
 use function array_pop;
 
@@ -20,7 +24,7 @@ use function array_pop;
  */
 final class AuthenticationSuccess extends AbstractResponse
 {
-    use ExtendableElemenTrait;
+    use ExtendableElementTrait;
 
 
     /** @var string */

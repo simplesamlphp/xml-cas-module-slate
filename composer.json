@@ -13,7 +13,6 @@
         "php": "^8.2",
         "ext-dom": "*",
 
-        "simplesamlphp/assert": "~1.9",
         "simplesamlphp/xml-cas": "~2.1",
         "simplesamlphp/xml-common": "~2.4"
     },
@@ -22,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "SimpleSAML\\Slate\\": "src/Slate/"
+            "SimpleSAML\\Slate\\": "src/"
         }
     },
     "autoload-dev": {
