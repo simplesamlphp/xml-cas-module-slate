@@ -7,8 +7,6 @@ namespace SimpleSAML\Slate\Test\XML;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use SimpleSAML\CAS\Utils\XPath;
-use SimpleSAML\CAS\XML\AbstractCasElement;
-use SimpleSAML\CAS\XML\AbstractResponse;
 use SimpleSAML\CAS\XML\AuthenticationDate;
 use SimpleSAML\CAS\XML\IsFromNewLogin;
 use SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed;
@@ -33,10 +31,7 @@ use function strval;
  *
  * @package simplesamlphp/xml-cas-module-slate
  */
-#[CoversClass(XPath::class)]
 #[CoversClass(AuthenticationSuccess::class)]
-#[CoversClass(AbstractResponse::class)]
-#[CoversClass(AbstractCasElement::class)]
 final class AuthenticationSuccessTest extends TestCase
 {
     use SerializableElementTestTrait;
