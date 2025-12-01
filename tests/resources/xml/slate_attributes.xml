@@ -1,0 +1,6 @@
+<cas:attributes xmlns:cas="http://www.yale.edu/tp/cas" xmlns:slate="http://technolutions.com/slate">
+    <cas:firstname>Example</cas:firstname>
+    <cas:lastname>User</cas:lastname>
+    <cas:email>example-user@technolutions.com</cas:email>
+    <slate:custom>customAttribute</slate:custom>
+</cas:attributes>

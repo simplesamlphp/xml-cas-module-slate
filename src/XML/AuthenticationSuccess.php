@@ -6,8 +6,10 @@ namespace SimpleSAML\Slate\XML;
 
 use DOMElement;
 use SimpleSAML\CAS\Assert\Assert;
+use SimpleSAML\XML\ExtendableElementTrait;
 use SimpleSAML\XMLSchema\Exception\InvalidDOMElementException;
 use SimpleSAML\XMLSchema\Exception\MissingElementException;
+use SimpleSAML\XMLSchema\XML\Constants\NS;
 
 use function array_pop;
 
@@ -18,15 +20,14 @@ use function array_pop;
  */
 final class AuthenticationSuccess extends AbstractResponse
 {
+    use ExtendableElemenTrait;
+
+
     /** @var string */
     final public const LOCALNAME = 'authenticationSuccess';
 
-
-    /**
-     * Non-CAS child elements directly under <cas:authenticationSuccess> to preserve round-trip.
-     * @var array<\DOMElement>
-     */
-    protected array $authenticationSuccessMetadata = [];
+    /** The namespace-attribute for the xs:any element */
+    final public const XS_ANY_ELT_NAMESPACE = [C::NS_SLATE];
 
 
     /**
@@ -36,13 +37,16 @@ final class AuthenticationSuccess extends AbstractResponse
      * @param \SimpleSAML\Slate\XML\Attributes $attributes
      * @param \SimpleSAML\CAS\XML\ProxyGrantingTicket|null $proxyGrantingTicket
      * @param \SimpleSAML\CAS\XML\Proxies|null $proxies
+     * @param \SimpleSAML\XML\SerializableElementInterface[] $children
      */
     final public function __construct(
         protected User $user,
         protected Attributes $attributes,
         protected ?ProxyGrantingTicket $proxyGrantingTicket = null,
         protected ?Proxies $proxies = null,
+        array $children = [],
     ) {
+        $this->setElements($children);
     }
 
 
@@ -61,16 +65,6 @@ final class AuthenticationSuccess extends AbstractResponse
     public function getAttributes(): Attributes
     {
         return $this->attributes;
-    }
-
-
-    /**
-     * Get Non-CAS child elements directly under <cas:authenticationSuccess> to preserve round-trip.
-     * @return array<\DOMElement>
-     */
-    public function getAuthenticationSuccessMetadata(): array
-    {
-        return $this->authenticationSuccessMetadata;
     }
 
 
@@ -127,52 +121,13 @@ final class AuthenticationSuccess extends AbstractResponse
         $proxyGrantingTicket = ProxyGrantingTicket::getChildrenOfClass($xml);
         $proxies = Proxies::getChildrenOfClass($xml);
 
-        $obj = new static(
+        return new static(
             $user[0],
             $attributes[0],
             array_pop($proxyGrantingTicket),
             array_pop($proxies),
+            self::getChildElementsFromXML($xml),
         );
-
-        /*
-         * Technolutions Slate’s SAMLValidate may emit vendor elements (e.g., slate:person, slate:round) directly under
-         * cas:authenticationSuccess, not only inside cas:attributes. To interoperate without loosening CAS strictness,
-         * we preserve and round‑trip only non‑CAS, namespaced children at that level and ignore unknown CAS‑namespace
-         * elements.
-         * This keeps vendor metadata intact for consumers (XPath, downstream mapping) while avoiding acceptance of
-         * schema‑unknown CAS elements.
-         */
-        $metadata = [];
-        foreach ($xml->childNodes as $child) {
-            if (!$child instanceof DOMElement) {
-                continue;
-            }
-
-            // Skip all known CAS elements in the CAS namespace
-            if ($child->namespaceURI === static::getNamespaceURI()) {
-                // Known, schema-defined children
-                if (
-                    $child->localName === 'user' ||
-                    $child->localName === 'attributes' ||
-                    $child->localName === 'proxyGrantingTicket' ||
-                    $child->localName === 'proxies'
-                ) {
-                    continue;
-                }
-                // Unknown elements in the CAS namespace are ignored to preserve strictness
-                continue;
-            }
-
-            // Only keep vendor elements with a non-null namespace (exclude local/no-namespace)
-            if ($child->namespaceURI === null) {
-                continue;
-            }
-
-            $metadata[] = $child;
-        }
-        $obj->authenticationSuccessMetadata = $metadata;
-
-        return $obj;
     }
 
 
@@ -191,11 +146,9 @@ final class AuthenticationSuccess extends AbstractResponse
         $this->getProxyGrantingTicket()?->toXML($e);
         $this->getProxies()?->toXML($e);
 
-        // Re-emit preserved non-CAS children (e.g., slate:* at top-level)
-        foreach ($this->authenticationSuccessMetadata as $child) {
-            $imported = $e->ownerDocument?->importNode($child, true);
-            if ($imported !== null) {
-                $e->appendChild($imported);
+        foreach ($this->getElements() as $elt) {
+            if (!$elt->isEmptyElement()) {
+                $elt->toXML($e);
             }
         }
 
