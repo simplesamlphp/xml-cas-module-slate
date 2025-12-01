@@ -208,7 +208,7 @@ final class AuthenticationSuccessTest extends TestCase
         $this->assertCount(1, $authenticationSuccessElements);
 
         // Test ordering of cas:authenticationSuccess contents
-        /** @psalm-var \DOMElement[] $authenticationSuccessElements */
+        /** @var \DOMElement[] $authenticationSuccessElements */
         $authenticationSuccessElements = XPath::xpQuery(
             $authenticationSuccessElement,
             './cas:user/following-sibling::*',

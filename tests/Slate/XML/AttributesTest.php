@@ -126,7 +126,7 @@ final class AttributesTest extends TestCase
         $this->assertCount(1, $attributesElements);
 
         // Test ordering of cas:attributes contents
-        /** @psalm-var \DOMElement[] $attributesElements */
+        /** @var \DOMElement[] $attributesElements */
         $attributesElements = XPath::xpQuery(
             $attributesElement,
             './cas:authenticationDate/following-sibling::*',
