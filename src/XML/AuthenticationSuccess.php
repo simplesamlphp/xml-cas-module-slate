@@ -20,7 +20,7 @@ use function array_pop;
 /**
  * Class for CAS authenticationSuccess
  *
- * @package simplesamlphp/cas
+ * @package simplesamlphp/xml-cas-module-slate
  */
 final class AuthenticationSuccess extends AbstractResponse
 {

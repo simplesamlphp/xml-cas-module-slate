@@ -21,7 +21,7 @@ use function array_pop;
 /**
  * Class for CAS attributes
  *
- * @package simplesamlphp/cas
+ * @package simplesamlphp/xml-cas-module-slate
  */
 final class Attributes extends AbstractCasElement
 {
