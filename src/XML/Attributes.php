@@ -39,15 +39,15 @@ final class Attributes extends AbstractCasElement
     /**
      * Initialize a cas:attributes element
      *
-     * @param \SimpleSAML\CAS\XML\AuthenticationDate $authenticationDate
-     * @param \SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed $longTermAuthenticationRequestTokenUsed
-     * @param \SimpleSAML\CAS\XML\IsFromNewLogin $isFromNewLogin
+     * @param \SimpleSAML\CAS\XML\AuthenticationDate|null $authenticationDate
+     * @param \SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed|null $longTermAuthenticationRequestTokenUsed
+     * @param \SimpleSAML\CAS\XML\IsFromNewLogin|null $isFromNewLogin
      * @param list<\SimpleSAML\XML\SerializableElementInterface> $elts
      */
     final public function __construct(
-        protected AuthenticationDate $authenticationDate,
-        protected LongTermAuthenticationRequestTokenUsed $longTermAuthenticationRequestTokenUsed,
-        protected IsFromNewLogin $isFromNewLogin,
+        protected ?AuthenticationDate $authenticationDate = null,
+        protected ?LongTermAuthenticationRequestTokenUsed $longTermAuthenticationRequestTokenUsed = null,
+        protected ?IsFromNewLogin $isFromNewLogin = null,
         array $elts = [],
     ) {
         $this->setElements($elts);
@@ -55,27 +55,27 @@ final class Attributes extends AbstractCasElement
 
 
     /**
-     * @return \SimpleSAML\CAS\XML\AuthenticationDate
+     * @return \SimpleSAML\CAS\XML\AuthenticationDate|null
      */
-    public function getAuthenticationDate(): AuthenticationDate
+    public function getAuthenticationDate(): ?AuthenticationDate
     {
         return $this->authenticationDate;
     }
 
 
     /**
-     * @return \SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed
+     * @return \SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed|null
      */
-    public function getLongTermAuthenticationRequestTokenUsed(): LongTermAuthenticationRequestTokenUsed
+    public function getLongTermAuthenticationRequestTokenUsed(): ?LongTermAuthenticationRequestTokenUsed
     {
         return $this->longTermAuthenticationRequestTokenUsed;
     }
 
 
     /**
-     * @return \SimpleSAML\CAS\XML\IsFromNewLogin
+     * @return \SimpleSAML\CAS\XML\IsFromNewLogin|null
      */
-    public function getIsFromNewLogin(): IsFromNewLogin
+    public function getIsFromNewLogin(): ?IsFromNewLogin
     {
         return $this->isFromNewLogin;
     }
@@ -122,9 +122,9 @@ final class Attributes extends AbstractCasElement
         );
 
         return new static(
-            $authenticationDate[0],
-            $longTermAuthenticationRequestTokenUsed[0],
-            $isFromNewLogin[0],
+            array_pop($authenticationDate),
+            array_pop($longTermAuthenticationRequestTokenUsed),
+            array_pop($isFromNewLogin),
             self::getChildElementsFromXML($xml),
         );
     }
@@ -140,12 +140,11 @@ final class Attributes extends AbstractCasElement
     {
         $e = $this->instantiateParentElement($parent);
 
-        $this->getAuthenticationDate()->toXML($e);
-        $this->getLongTermAuthenticationRequestTokenUsed()->toXML($e);
-        $this->getIsFromNewLogin()->toXML($e);
+        $this->getAuthenticationDate()?->toXML($e);
+        $this->getLongTermAuthenticationRequestTokenUsed()?->toXML($e);
+        $this->getIsFromNewLogin()?->toXML($e);
 
-        /** @psalm-var \SimpleSAML\XML\SerializableElementInterface $elt */
-        foreach ($this->elements as $elt) {
+        foreach ($this->getElements() as $elt) {
             if (!$elt->isEmptyElement()) {
                 $elt->toXML($e);
             }
