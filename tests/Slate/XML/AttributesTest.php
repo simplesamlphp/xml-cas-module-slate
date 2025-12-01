@@ -59,6 +59,26 @@ final class AttributesTest extends TestCase
         $authenticationDate = new AuthenticationDate(self::$authenticationDate);
         $longTerm = new LongTermAuthenticationRequestTokenUsed(BooleanValue::fromString('true'));
         $isFromNewLogin = new IsFromNewLogin(BooleanValue::fromString('true'));
+
+        /** @var \DOMElement $firstNameElt */
+        $firstNameElt = DOMDocumentFactory::fromString(
+            '<cas:firstname xmlns:cas="http://www.yale.edu/tp/cas">Example</cas:firstname>',
+        )->documentElement;
+
+        $firstName = new Chunk($firstNameElt);
+
+        /** @var \DOMElement $lastNameElt */
+        $lastNameElt = DOMDocumentFactory::fromString(
+            '<cas:lastname xmlns:cas="http://www.yale.edu/tp/cas">User</cas:lastname>',
+        )->documentElement;
+        $lastName = new Chunk($lastNameElt);
+
+        /** @var \DOMElement $emailElt */
+        $emailElt = DOMDocumentFactory::fromString(
+            '<cas:email xmlns:cas="http://www.yale.edu/tp/cas">example-user@technolutions.com</cas:email>',
+        )->documentElement;
+        $email = new Chunk($emailElt);
+
         $document = DOMDocumentFactory::fromString(
             '<cas:myAttribute xmlns:cas="http://www.yale.edu/tp/cas">myValue</cas:myAttribute>',
         );
@@ -66,7 +86,19 @@ final class AttributesTest extends TestCase
         /** @var \DOMElement $elt */
         $elt = $document->documentElement;
         $myAttribute = new Chunk($elt);
-        $attributes = new Attributes($authenticationDate, $longTerm, $isFromNewLogin, [$myAttribute]);
+
+        /** @var \DOMElement $customAttrElt */
+        $customAttrElt = DOMDocumentFactory::fromString(
+            '<slate:custom xmlns:slate="http://technolutions.com/slate">customAttribute</slate:custom>',
+        )->documentElement;
+        $customAttr = new Chunk($customAttrElt);
+
+        $attributes = new Attributes(
+            $authenticationDate,
+            $longTerm,
+            $isFromNewLogin,
+            [$firstName, $lastName, $email, $myAttribute, $customAttr],
+        );
 
         $this->assertEquals(
             self::$xmlRepresentation->saveXML(self::$xmlRepresentation->documentElement),

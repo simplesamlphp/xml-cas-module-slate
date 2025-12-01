@@ -146,15 +146,16 @@ final class AuthenticationSuccess extends AbstractResponse
         $e = $this->instantiateParentElement($parent);
 
         $this->getUser()->toXML($e);
-        $this->getAttributes()->toXML($e);
-        $this->getProxyGrantingTicket()?->toXML($e);
-        $this->getProxies()?->toXML($e);
 
         foreach ($this->getElements() as $elt) {
             if (!$elt->isEmptyElement()) {
                 $elt->toXML($e);
             }
         }
+
+        $this->getAttributes()->toXML($e);
+        $this->getProxyGrantingTicket()?->toXML($e);
+        $this->getProxies()?->toXML($e);
 
         return $e;
     }

@@ -66,36 +66,75 @@ final class AuthenticationSuccessTest extends TestCase
     {
         /** @var \DOMElement $firstNameElt */
         $firstNameElt = DOMDocumentFactory::fromString(
-            '<cas:firstname xmlns:cas="http://www.yale.edu/tp/cas">John</cas:firstname>',
+            '<cas:firstname xmlns:cas="http://www.yale.edu/tp/cas">Example</cas:firstname>',
         )->documentElement;
 
         $firstName = new Chunk($firstNameElt);
 
         /** @var \DOMElement $lastNameElt */
         $lastNameElt = DOMDocumentFactory::fromString(
-            '<cas:lastname xmlns:cas="http://www.yale.edu/tp/cas">Doe</cas:lastname>',
+            '<cas:lastname xmlns:cas="http://www.yale.edu/tp/cas">User</cas:lastname>',
         )->documentElement;
         $lastName = new Chunk($lastNameElt);
 
         /** @var \DOMElement $emailElt */
         $emailElt = DOMDocumentFactory::fromString(
-            '<cas:email xmlns:cas="http://www.yale.edu/tp/cas">jdoe@example.org</cas:email>',
+            '<cas:email xmlns:cas="http://www.yale.edu/tp/cas">example-user@technolutions.com</cas:email>',
         )->documentElement;
         $email = new Chunk($emailElt);
+
+        /** @var \DOMElement $customAttrElt */
+        $customAttrElt = DOMDocumentFactory::fromString(
+            '<slate:custom xmlns:slate="http://technolutions.com/slate">customAttribute</slate:custom>',
+        )->documentElement;
+        $customAttr = new Chunk($customAttrElt);
 
         $authenticationDate = new AuthenticationDate(self::$authenticationDate);
         $longTerm = new LongTermAuthenticationRequestTokenUsed(BooleanValue::fromString('true'));
         $isFromNewLogin = new IsFromNewLogin(BooleanValue::fromString('true'));
 
-        $user = new User(StringValue::fromString('username'));
-        $attributes = new Attributes($authenticationDate, $longTerm, $isFromNewLogin, [$firstName, $lastName, $email]);
+        $user = new User(StringValue::fromString('example-user@technolutions.com'));
+        $attributes = new Attributes(
+            $authenticationDate,
+            $longTerm,
+            $isFromNewLogin,
+            [$firstName, $lastName, $email, $customAttr],
+        );
         $proxyGrantingTicket = new ProxyGrantingTicket(StringValue::fromString('PGTIOU-84678-8a9d...'));
         $proxies = new Proxies([
             new Proxy(StringValue::fromString('https://proxy2/pgtUrl')),
             new Proxy(StringValue::fromString('https://proxy1/pgtUrl')),
         ]);
 
-        $authenticationSuccess = new AuthenticationSuccess($user, $attributes, $proxyGrantingTicket, $proxies);
+        /** @var \DOMElement $personElt */
+        $personElt = DOMDocumentFactory::fromString(
+            // phpcs:ignore Generic.Files.LineLength
+            '<slate:person xmlns:slate="http://technolutions.com/slate">345d2e1b-65de-419c-96ce-e1866d4c57cd</slate:person>',
+        )->documentElement;
+
+        $person = new Chunk($personElt);
+
+        /** @var \DOMElement $roundElt */
+        $roundElt = DOMDocumentFactory::fromString(
+            '<slate:round xmlns:slate="http://technolutions.com/slate">Regular Decision</slate:round>',
+        )->documentElement;
+
+        $round = new Chunk($roundElt);
+
+        /** @var \DOMElement $refElt */
+        $refElt = DOMDocumentFactory::fromString(
+            '<slate:ref xmlns:slate="http://technolutions.com/slate">774482874</slate:ref>',
+        )->documentElement;
+
+        $ref = new Chunk($refElt);
+
+        $authenticationSuccess = new AuthenticationSuccess(
+            $user,
+            $attributes,
+            $proxyGrantingTicket,
+            $proxies,
+            [$person, $round, $ref],
+        );
 
         $this->assertEquals(
             self::$xmlRepresentation->saveXML(self::$xmlRepresentation->documentElement),
@@ -137,7 +176,35 @@ final class AuthenticationSuccessTest extends TestCase
             new Proxy(StringValue::fromString('https://proxy1/pgtUrl')),
         ]);
 
-        $authenticationSuccess = new AuthenticationSuccess($user, $attributes, $proxyGrantingTicket, $proxies);
+        /** @var \DOMElement $personElt */
+        $personElt = DOMDocumentFactory::fromString(
+            // phpcs:ignore Generic.Files.LineLength
+            '<slate:person xmlns:slate="http://technolutions.com/slate">345d2e1b-65de-419c-96ce-e1866d4c57cd</slate:person>',
+        )->documentElement;
+
+        $person = new Chunk($personElt);
+
+        /** @var \DOMElement $roundElt */
+        $roundElt = DOMDocumentFactory::fromString(
+            '<slate:round xmlns:slate="http://technolutions.com/slate">Regular Decision</slate:round>',
+        )->documentElement;
+
+        $round = new Chunk($roundElt);
+
+        /** @var \DOMElement $refElt */
+        $refElt = DOMDocumentFactory::fromString(
+            '<slate:ref xmlns:slate="http://technolutions.com/slate">774482874</slate:ref>',
+        )->documentElement;
+
+        $ref = new Chunk($refElt);
+
+        $authenticationSuccess = new AuthenticationSuccess(
+            $user,
+            $attributes,
+            $proxyGrantingTicket,
+            $proxies,
+            [$person, $round, $ref],
+        );
         $authenticationSuccessElement = $authenticationSuccess->toXML();
 
         // Test for a user-element
@@ -153,9 +220,12 @@ final class AuthenticationSuccessTest extends TestCase
             $xpCache,
         );
 
-        $this->assertCount(3, $authenticationSuccessElements);
-        $this->assertEquals('cas:attributes', $authenticationSuccessElements[0]->tagName);
-        $this->assertEquals('cas:proxyGrantingTicket', $authenticationSuccessElements[1]->tagName);
-        $this->assertEquals('cas:proxies', $authenticationSuccessElements[2]->tagName);
+        $this->assertCount(6, $authenticationSuccessElements);
+        $this->assertEquals('slate:person', $authenticationSuccessElements[0]->tagName);
+        $this->assertEquals('slate:round', $authenticationSuccessElements[1]->tagName);
+        $this->assertEquals('slate:ref', $authenticationSuccessElements[2]->tagName);
+        $this->assertEquals('cas:attributes', $authenticationSuccessElements[3]->tagName);
+        $this->assertEquals('cas:proxyGrantingTicket', $authenticationSuccessElements[4]->tagName);
+        $this->assertEquals('cas:proxies', $authenticationSuccessElements[5]->tagName);
     }
 }

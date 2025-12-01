@@ -1,6 +1,10 @@
 <cas:attributes xmlns:cas="http://www.yale.edu/tp/cas" xmlns:slate="http://technolutions.com/slate">
-    <cas:firstname>Example</cas:firstname>
-    <cas:lastname>User</cas:lastname>
-    <cas:email>example-user@technolutions.com</cas:email>
-    <slate:custom>customAttribute</slate:custom>
+  <cas:authenticationDate>2015-11-12T09:30:10Z</cas:authenticationDate>
+  <cas:longTermAuthenticationRequestTokenUsed>true</cas:longTermAuthenticationRequestTokenUsed>
+  <cas:isFromNewLogin>true</cas:isFromNewLogin>
+  <cas:firstname>Example</cas:firstname>
+  <cas:lastname>User</cas:lastname>
+  <cas:email>example-user@technolutions.com</cas:email>
+  <cas:myAttribute>myValue</cas:myAttribute>
+  <slate:custom>customAttribute</slate:custom>
 </cas:attributes>
