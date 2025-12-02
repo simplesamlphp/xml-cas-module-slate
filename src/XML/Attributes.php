@@ -6,15 +6,11 @@ namespace SimpleSAML\Slate\XML;
 
 use DOMElement;
 use SimpleSAML\CAS\Assert\Assert;
-use SimpleSAML\CAS\XML\AbstractCasElement;
 use SimpleSAML\CAS\XML\AuthenticationDate;
 use SimpleSAML\CAS\XML\IsFromNewLogin;
 use SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed;
-use SimpleSAML\Slate\Constants as C;
-use SimpleSAML\XML\ExtendableElementTrait;
 use SimpleSAML\XMLSchema\Exception\InvalidDOMElementException;
 use SimpleSAML\XMLSchema\Exception\MissingElementException;
-use SimpleSAML\XMLSchema\XML\Constants\NS;
 
 use function array_pop;
 
@@ -23,70 +19,8 @@ use function array_pop;
  *
  * @package simplesamlphp/xml-cas-module-slate
  */
-final class Attributes extends AbstractCasElement
+final class Attributes extends AbstractAttributes
 {
-    use ExtendableElementTrait;
-
-
-    /** @var string */
-    final public const LOCALNAME = 'attributes';
-
-    /** The namespace-attribute for the xs:any element */
-    final public const XS_ANY_ELT_NAMESPACE = NS::ANY;
-
-    /** The exclusions for the xs:any element */
-    final public const XS_ANY_ELT_EXCLUSIONS = [
-        [C::NS_CAS, 'authenticationDate'],
-        [C::NS_CAS, 'longTermAuthenticationRequestTokenUsed'],
-        [C::NS_CAS, 'isFromNewLogin'],
-    ];
-
-
-    /**
-     * Initialize a cas:attributes element
-     *
-     * @param \SimpleSAML\CAS\XML\AuthenticationDate|null $authenticationDate
-     * @param \SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed|null $longTermAuthenticationRequestTokenUsed
-     * @param \SimpleSAML\CAS\XML\IsFromNewLogin|null $isFromNewLogin
-     * @param list<\SimpleSAML\XML\SerializableElementInterface> $elts
-     */
-    final public function __construct(
-        protected ?AuthenticationDate $authenticationDate = null,
-        protected ?LongTermAuthenticationRequestTokenUsed $longTermAuthenticationRequestTokenUsed = null,
-        protected ?IsFromNewLogin $isFromNewLogin = null,
-        array $elts = [],
-    ) {
-        $this->setElements($elts);
-    }
-
-
-    /**
-     * @return \SimpleSAML\CAS\XML\AuthenticationDate|null
-     */
-    public function getAuthenticationDate(): ?AuthenticationDate
-    {
-        return $this->authenticationDate;
-    }
-
-
-    /**
-     * @return \SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed|null
-     */
-    public function getLongTermAuthenticationRequestTokenUsed(): ?LongTermAuthenticationRequestTokenUsed
-    {
-        return $this->longTermAuthenticationRequestTokenUsed;
-    }
-
-
-    /**
-     * @return \SimpleSAML\CAS\XML\IsFromNewLogin|null
-     */
-    public function getIsFromNewLogin(): ?IsFromNewLogin
-    {
-        return $this->isFromNewLogin;
-    }
-
-
     /**
      * Convert XML into a cas:attributes-element
      *
@@ -133,29 +67,5 @@ final class Attributes extends AbstractCasElement
             array_pop($isFromNewLogin),
             self::getChildElementsFromXML($xml),
         );
-    }
-
-
-    /**
-     * Convert this Attributes to XML.
-     *
-     * @param \DOMElement|null $parent The element we should append this Attributes to.
-     * @return \DOMElement
-     */
-    public function toXML(?DOMElement $parent = null): DOMElement
-    {
-        $e = $this->instantiateParentElement($parent);
-
-        $this->getAuthenticationDate()?->toXML($e);
-        $this->getLongTermAuthenticationRequestTokenUsed()?->toXML($e);
-        $this->getIsFromNewLogin()?->toXML($e);
-
-        foreach ($this->getElements() as $elt) {
-            if (!$elt->isEmptyElement()) {
-                $elt->toXML($e);
-            }
-        }
-
-        return $e;
     }
 }
