@@ -9,6 +9,8 @@ use SimpleSAML\CAS\XML\AbstractCasElement;
 use SimpleSAML\CAS\XML\AuthenticationDate;
 use SimpleSAML\CAS\XML\IsFromNewLogin;
 use SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed;
+use SimpleSAML\XML\ExtendableElementTrait;
+use SimpleSAML\XMLSchema\XML\Constants\NS;
 
 /**
  * Class for CAS attributes
@@ -17,6 +19,13 @@ use SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed;
  */
 abstract class AbstractAttributes extends AbstractCasElement
 {
+    use ExtendableElementTrait;
+
+
+    /** The namespace-attribute for the xs:any element */
+    final public const XS_ANY_ELT_NAMESPACE = NS::ANY;
+
+
     /**
      * Initialize a cas:attributes element
      *

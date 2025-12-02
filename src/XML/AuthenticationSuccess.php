@@ -36,7 +36,7 @@ final class AuthenticationSuccess extends AbstractAuthenticationSuccess
      * Initialize a cas:authenticationSuccess element
      *
      * @param \SimpleSAML\CAS\XML\User $user
-     * @param \SimpleSAML\CAS\XML\AbstractAttributes $attributes
+     * @param \SimpleSAML\Slate\XML\AbstractAttributes $attributes
      * @param \SimpleSAML\CAS\XML\ProxyGrantingTicket|null $proxyGrantingTicket
      * @param \SimpleSAML\CAS\XML\Proxies|null $proxies
      * @param \SimpleSAML\XML\SerializableElementInterface[] $children
