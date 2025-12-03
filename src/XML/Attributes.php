@@ -9,6 +9,7 @@ use SimpleSAML\CAS\Assert\Assert;
 use SimpleSAML\CAS\XML\AuthenticationDate;
 use SimpleSAML\CAS\XML\IsFromNewLogin;
 use SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed;
+use SimpleSAML\XML\Chunk;
 use SimpleSAML\XMLSchema\Exception\InvalidDOMElementException;
 use SimpleSAML\XMLSchema\Exception\MissingElementException;
 
@@ -21,6 +22,18 @@ use function array_pop;
  */
 final class Attributes extends AbstractAttributes
 {
+    /**
+     * Return the local name for this element.
+     *
+     * The base CAS implementation uses "Attributes" (capital A), but Slate expects
+     * the canonical CAS element name to be "attributes" (lowercase a).
+     */
+    public static function getLocalName(): string
+    {
+        return 'attributes';
+    }
+
+
     /**
      * Convert XML into a cas:attributes-element
      *
@@ -61,11 +74,38 @@ final class Attributes extends AbstractAttributes
             MissingElementException::class,
         );
 
+        // Get all child elements, but drop the ones that are already handled
+        // as dedicated constructor arguments to avoid duplicates.
+        $elts = self::getChildElementsFromXML($xml);
+
+        // Names of the standard CAS children we already expose as typed properties
+        $standardNames = [
+            'authenticationDate',
+            'longTermAuthenticationRequestTokenUsed',
+            'isFromNewLogin',
+        ];
+
+        // Remove those three from the generic list
+        $elts = array_values(
+            array_filter(
+                $elts,
+                static function (object $elt) use ($standardNames): bool {
+                    if (!$elt instanceof Chunk) {
+                        // Non-Chunk elements are fine
+                        return true;
+                    }
+
+                    return !($elt->getNamespaceURI() === self::NS
+                        && in_array($elt->getLocalName(), $standardNames, true));
+                },
+            ),
+        );
+
         return new static(
             array_pop($authenticationDate),
             array_pop($longTermAuthenticationRequestTokenUsed),
             array_pop($isFromNewLogin),
-            self::getChildElementsFromXML($xml),
+            $elts,
         );
     }
 }
