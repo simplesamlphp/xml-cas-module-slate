@@ -72,23 +72,4 @@ abstract class AbstractAuthenticationSuccess extends AbstractResponse
     {
         return $this->proxies;
     }
-
-
-    /**
-     * Convert this AuthenticationSuccess to XML.
-     *
-     * @param \DOMElement|null $parent The element we should append this AuthenticationSuccess to.
-     * @return \DOMElement
-     */
-    public function toXML(?DOMElement $parent = null): DOMElement
-    {
-        $e = $this->instantiateParentElement($parent);
-
-        $this->getUser()->toXML($e);
-        $this->getAttributes()->toXML($e);
-        $this->getProxyGrantingTicket()?->toXML($e);
-        $this->getProxies()?->toXML($e);
-
-        return $e;
-    }
 }
