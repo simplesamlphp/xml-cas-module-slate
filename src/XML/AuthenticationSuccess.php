@@ -6,8 +6,6 @@ namespace SimpleSAML\Slate\XML;
 
 use DOMElement;
 use SimpleSAML\CAS\Assert\Assert;
-use SimpleSAML\CAS\XML\AbstractAttributes;
-use SimpleSAML\CAS\XML\AbstractAuthenticationSuccess;
 use SimpleSAML\CAS\XML\Proxies;
 use SimpleSAML\CAS\XML\ProxyGrantingTicket;
 use SimpleSAML\CAS\XML\User;
@@ -19,7 +17,7 @@ use SimpleSAML\XMLSchema\Exception\MissingElementException;
 use function array_pop;
 
 /**
- * Class for CAS authenticationSuccess
+ * Class for Slate authenticationSuccess
  *
  * @package simplesamlphp/xml-cas-module-slate
  */
@@ -33,10 +31,10 @@ final class AuthenticationSuccess extends AbstractAuthenticationSuccess
 
 
     /**
-     * Initialize a cas:authenticationSuccess element
+     * Initialize a slate:authenticationSuccess element
      *
      * @param \SimpleSAML\CAS\XML\User $user
-     * @param \SimpleSAML\Slate\XML\AbstractAttributes $attributes
+     * @param \SimpleSAML\Slate\XML\Attributes $attributes
      * @param \SimpleSAML\CAS\XML\ProxyGrantingTicket|null $proxyGrantingTicket
      * @param \SimpleSAML\CAS\XML\Proxies|null $proxies
      * @param \SimpleSAML\XML\SerializableElementInterface[] $children

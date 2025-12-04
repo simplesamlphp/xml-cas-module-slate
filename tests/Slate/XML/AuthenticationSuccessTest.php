@@ -223,4 +223,93 @@ final class AuthenticationSuccessTest extends TestCase
         $this->assertEquals('cas:proxyGrantingTicket', $authenticationSuccessElements[4]->tagName);
         $this->assertEquals('cas:proxies', $authenticationSuccessElements[5]->tagName);
     }
+
+
+    /**
+     * Ensure that getElements() returns only the
+     * Slate metadata elements directly under <cas:authenticationSuccess>
+     * (e.g. slate:person, slate:round, slate:ref) and no CAS elements.
+     */
+    public function testAuthenticationSuccessElementsContainOnlySlateChildren(): void
+    {
+        // Use the Slate-specific response with slate:person/round/ref
+        $doc = DOMDocumentFactory::fromFile(
+            dirname(__FILE__, 3) . '/resources/xml/slate_authenticationSuccess.xml',
+        );
+
+        /** @var \DOMElement $element */
+        $element = $doc->documentElement;
+
+        $authenticationSuccess = AuthenticationSuccess::fromXML($element);
+
+        $metadata = $authenticationSuccess->getElements();
+
+        // We expect exactly the three Slate children under cas:authenticationSuccess
+        $this->assertCount(3, $metadata);
+
+        $localNames = [];
+        $prefixes = [];
+        foreach ($metadata as $m) {
+            $this->assertInstanceOf(Chunk::class, $m);
+            $localNames[] = $m->getLocalName();
+            $prefixes[] = $m->getPrefix();
+        }
+
+        sort($localNames);
+        sort($prefixes);
+
+        $this->assertSame(['person', 'ref', 'round'], $localNames);
+        $this->assertSame(['slate', 'slate', 'slate'], $prefixes);
+
+        // Sanity check: cas:user / cas:attributes / cas:proxyGrantingTicket / cas:proxies
+        // must not appear as metadata.
+        $this->assertNotContains('user', $localNames);
+        $this->assertNotContains('attributes', $localNames);
+        $this->assertNotContains('proxyGrantingTicket', $localNames);
+        $this->assertNotContains('proxies', $localNames);
+    }
+
+
+    /**
+     * Ensure that fromXML() on the full authenticationSuccess structure correctly
+     * populates the nested Attributes element, and that the standard CAS
+     * attributes children are not duplicated inside it.
+     */
+    public function testFromXMLNestedAttributesAreFilteredAndTyped(): void
+    {
+        /** @var \DOMElement $element */
+        $element = self::$xmlRepresentation->documentElement;
+
+        $authenticationSuccess = AuthenticationSuccess::fromXML($element);
+
+        $attributes = $authenticationSuccess->getAttributes();
+
+        // Standard CAS children are exposed as typed properties
+        $this->assertInstanceOf(AuthenticationDate::class, $attributes->getAuthenticationDate());
+        $this->assertInstanceOf(
+            LongTermAuthenticationRequestTokenUsed::class,
+            $attributes->getLongTermAuthenticationRequestTokenUsed(),
+        );
+        $this->assertInstanceOf(IsFromNewLogin::class, $attributes->getIsFromNewLogin());
+
+        // Extension attributes under <cas:attributes> should NOT include the three
+        // standard CAS children again.
+        $elts = $attributes->getElements();
+        $names = [];
+        foreach ($elts as $c) {
+            $this->assertInstanceOf(Chunk::class, $c);
+            $names[] = $c->getLocalName();
+        }
+
+
+        $this->assertFalse(in_array('authenticationDate', $names, true));
+        $this->assertFalse(in_array('longTermAuthenticationRequestTokenUsed', $names, true));
+        $this->assertFalse(in_array('isFromNewLogin', $names, true));
+
+        // And the full authenticationSuccess round-trips correctly
+        $this->assertSame(
+            self::$xmlRepresentation->saveXML(self::$xmlRepresentation->documentElement),
+            strval($authenticationSuccess),
+        );
+    }
 }

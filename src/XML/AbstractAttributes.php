@@ -25,6 +25,13 @@ abstract class AbstractAttributes extends AbstractCasElement
     /** The namespace-attribute for the xs:any element */
     final public const XS_ANY_ELT_NAMESPACE = NS::ANY;
 
+    /** @var array{array{string, string}} */
+    final public const XS_ANY_ELT_EXCLUSIONS = [
+        [self::NS, 'authenticationDate'],
+        [self::NS, 'longTermAuthenticationRequestTokenUsed'],
+        [self::NS, 'isFromNewLogin'],
+    ];
+
 
     /**
      * Initialize a cas:attributes element
