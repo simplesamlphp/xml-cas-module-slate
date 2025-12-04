@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace SimpleSAML\Slate\XML;
 
-use DOMElement;
 use SimpleSAML\CAS\XML\AbstractResponse;
 use SimpleSAML\CAS\XML\Proxies;
 use SimpleSAML\CAS\XML\ProxyGrantingTicket;
