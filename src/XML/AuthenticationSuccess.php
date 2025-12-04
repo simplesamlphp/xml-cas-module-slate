@@ -52,16 +52,6 @@ final class AuthenticationSuccess extends AbstractAuthenticationSuccess
 
 
     /**
-     * Get Non-CAS child elements directly under <cas:authenticationSuccess> to preserve round-trip.
-     * @return array<\SimpleSAML\XML\SerializableElementInterface>
-     */
-    public function getAuthenticationSuccessMetadataElements(): array
-    {
-        return $this->getElements();
-    }
-
-
-    /**
      * Convert XML into a cas:authenticationSuccess-element
      *
      * @param \DOMElement $xml The XML element we should load

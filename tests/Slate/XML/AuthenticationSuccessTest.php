@@ -226,11 +226,11 @@ final class AuthenticationSuccessTest extends TestCase
 
 
     /**
-     * Ensure that getAuthenticationSuccessMetadataElements() returns only the
+     * Ensure that getElements() returns only the
      * Slate metadata elements directly under <cas:authenticationSuccess>
      * (e.g. slate:person, slate:round, slate:ref) and no CAS elements.
      */
-    public function testAuthenticationSuccessMetadataElementsContainOnlySlateChildren(): void
+    public function testAuthenticationSuccessElementsContainOnlySlateChildren(): void
     {
         // Use the Slate-specific response with slate:person/round/ref
         $doc = DOMDocumentFactory::fromFile(
@@ -242,7 +242,7 @@ final class AuthenticationSuccessTest extends TestCase
 
         $authenticationSuccess = AuthenticationSuccess::fromXML($element);
 
-        $metadata = $authenticationSuccess->getAuthenticationSuccessMetadataElements();
+        $metadata = $authenticationSuccess->getElements();
 
         // We expect exactly the three Slate children under cas:authenticationSuccess
         $this->assertCount(3, $metadata);
