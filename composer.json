@@ -13,7 +13,7 @@
         "php": "^8.2",
         "ext-dom": "*",
 
-        "simplesamlphp/xml-cas": "dev-feature/refactor-xsd-schema",
+        "simplesamlphp/xml-cas": "~2.2.0",
         "simplesamlphp/xml-common": "~2.4"
     },
     "require-dev": {
