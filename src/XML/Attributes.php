@@ -21,16 +21,7 @@ use function array_pop;
  */
 final class Attributes extends AbstractAttributes
 {
-    /**
-     * Return the local name for this element.
-     *
-     * The base CAS implementation uses "Attributes" (capital A), but Slate expects
-     * the canonical CAS element name to be "attributes" (lowercase a).
-     */
-    public static function getLocalName(): string
-    {
-        return 'attributes';
-    }
+    final public const string LOCALNAME = 'attributes';
 
 
     /**

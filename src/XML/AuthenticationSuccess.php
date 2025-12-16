@@ -27,7 +27,7 @@ final class AuthenticationSuccess extends AbstractAuthenticationSuccess
 
 
     /** The namespace-attribute for the xs:any element */
-    final public const XS_ANY_ELT_NAMESPACE = [C::NS_SLATE];
+    final public const array XS_ANY_ELT_NAMESPACE = [C::NS_SLATE];
 
 
     /**
