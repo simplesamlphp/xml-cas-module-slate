@@ -16,8 +16,7 @@ use SimpleSAML\CAS\XML\User;
  */
 abstract class AbstractAuthenticationSuccess extends AbstractResponse
 {
-    /** @var string */
-    final public const LOCALNAME = 'authenticationSuccess';
+    final public const string LOCALNAME = 'authenticationSuccess';
 
 
     /**

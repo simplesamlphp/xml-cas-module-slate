@@ -14,5 +14,5 @@ class Constants extends \SimpleSAML\CAS\Constants
     /**
      * The namespace for the Slate CAS protocol.
      */
-    final public const NS_SLATE = 'http://technolutions.com/slate';
+    final public const string NS_SLATE = 'http://technolutions.com/slate';
 }
