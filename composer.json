@@ -13,8 +13,8 @@
         "php": "^8.3",
         "ext-dom": "*",
 
-        "simplesamlphp/xml-cas": "~2.2.0",
-        "simplesamlphp/xml-common": "~2.4"
+        "simplesamlphp/xml-cas": "~2.3.0",
+        "simplesamlphp/xml-common": "~2.5"
     },
     "require-dev": {
         "simplesamlphp/simplesamlphp-test-framework": "~1.11"
