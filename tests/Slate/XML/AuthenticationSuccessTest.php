@@ -19,7 +19,6 @@ use SimpleSAML\Slate\XML\AuthenticationSuccess;
 use SimpleSAML\XML\Chunk;
 use SimpleSAML\XML\DOMDocumentFactory;
 use SimpleSAML\XML\TestUtils\SerializableElementTestTrait;
-use SimpleSAML\XMLSchema\Type\BooleanValue;
 use SimpleSAML\XMLSchema\Type\DateTimeValue;
 use SimpleSAML\XMLSchema\Type\StringValue;
 
@@ -85,17 +84,17 @@ final class AuthenticationSuccessTest extends TestCase
         $customAttr = new Chunk($customAttrElt);
 
         $authenticationDate = new AuthenticationDate(self::$authenticationDate);
-        $longTerm = new LongTermAuthenticationRequestTokenUsed(BooleanValue::fromString('true'));
-        $isFromNewLogin = new IsFromNewLogin(BooleanValue::fromString('true'));
+        $longTerm = LongTermAuthenticationRequestTokenUsed::fromString('true');
+        $isFromNewLogin = IsFromNewLogin::fromString('true');
 
-        $user = new User(StringValue::fromString('example-user@technolutions.com'));
+        $user = User::fromString('example-user@technolutions.com');
         $attributes = new Attributes(
             $authenticationDate,
             $longTerm,
             $isFromNewLogin,
             [$firstName, $lastName, $email, $customAttr],
         );
-        $proxyGrantingTicket = new ProxyGrantingTicket(StringValue::fromString('PGTIOU-84678-8a9d...'));
+        $proxyGrantingTicket = ProxyGrantingTicket::fromString('PGTIOU-84678-8a9d...');
         $proxies = new Proxies([
             new Proxy(StringValue::fromString('https://proxy2/pgtUrl')),
             new Proxy(StringValue::fromString('https://proxy1/pgtUrl')),
@@ -160,15 +159,15 @@ final class AuthenticationSuccessTest extends TestCase
         $email = new Chunk($emailElt);
 
         $authenticationDate = new AuthenticationDate(self::$authenticationDate);
-        $longTerm = new LongTermAuthenticationRequestTokenUsed(BooleanValue::fromString('true'));
-        $isFromNewLogin = new IsFromNewLogin(BooleanValue::fromString('true'));
+        $longTerm = LongTermAuthenticationRequestTokenUsed::fromString('true');
+        $isFromNewLogin = IsFromNewLogin::fromString('true');
 
-        $user = new User(StringValue::fromString('username'));
+        $user = User::fromString('username');
         $attributes = new Attributes($authenticationDate, $longTerm, $isFromNewLogin, [$firstName, $lastName, $email]);
-        $proxyGrantingTicket = new ProxyGrantingTicket(StringValue::fromString('PGTIOU-84678-8a9d...'));
+        $proxyGrantingTicket = ProxyGrantingTicket::fromString('PGTIOU-84678-8a9d...');
         $proxies = new Proxies([
-            new Proxy(StringValue::fromString('https://proxy2/pgtUrl')),
-            new Proxy(StringValue::fromString('https://proxy1/pgtUrl')),
+            Proxy::fromString('https://proxy2/pgtUrl'),
+            Proxy::fromString('https://proxy1/pgtUrl'),
         ]);
 
         /** @var \DOMElement $personElt */
