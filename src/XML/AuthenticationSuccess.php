@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SimpleSAML\Slate\XML;
 
-use DOMElement;
+use Dom;
 use SimpleSAML\CAS\Assert\Assert;
 use SimpleSAML\CAS\XML\Proxies;
 use SimpleSAML\CAS\XML\ProxyGrantingTicket;
@@ -54,7 +54,7 @@ final class AuthenticationSuccess extends AbstractAuthenticationSuccess
     /**
      * Convert XML into a cas:authenticationSuccess-element
      *
-     * @param \DOMElement $xml The XML element we should load
+     * @param \Dom\Element $xml The XML element we should load
      * @return static
      *
      * @throws \SimpleSAML\XMLSchema\Exception\InvalidDOMElementException
@@ -62,7 +62,7 @@ final class AuthenticationSuccess extends AbstractAuthenticationSuccess
      * @throws \SimpleSAML\XMLSchema\Exception\MissingAttributeException
      *   if the supplied element is missing one of the mandatory attributes
      */
-    public static function fromXML(DOMElement $xml): static
+    public static function fromXML(Dom\Element $xml): static
     {
         Assert::same($xml->localName, static::getLocalName(), InvalidDOMElementException::class);
         Assert::same($xml->namespaceURI, static::getNamespaceURI(), InvalidDOMElementException::class);
@@ -99,10 +99,10 @@ final class AuthenticationSuccess extends AbstractAuthenticationSuccess
     /**
      * Convert this AuthenticationSuccess to XML.
      *
-     * @param \DOMElement|null $parent The element we should append this AuthenticationSuccess to.
-     * @return \DOMElement
+     * @param \Dom\Element|null $parent The element we should append this AuthenticationSuccess to.
+     * @return \Dom\Element
      */
-    public function toXML(?DOMElement $parent = null): DOMElement
+    public function toXML(?Dom\Element $parent = null): Dom\Element
     {
         $e = $this->instantiateParentElement($parent);
 

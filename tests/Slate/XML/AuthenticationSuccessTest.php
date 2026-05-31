@@ -58,26 +58,26 @@ final class AuthenticationSuccessTest extends TestCase
      */
     public function testMarshalling(): void
     {
-        /** @var \DOMElement $firstNameElt */
+        /** @var \Dom\Element $firstNameElt */
         $firstNameElt = DOMDocumentFactory::fromString(
             '<cas:firstname xmlns:cas="http://www.yale.edu/tp/cas">Example</cas:firstname>',
         )->documentElement;
 
         $firstName = new Chunk($firstNameElt);
 
-        /** @var \DOMElement $lastNameElt */
+        /** @var \Dom\Element $lastNameElt */
         $lastNameElt = DOMDocumentFactory::fromString(
             '<cas:lastname xmlns:cas="http://www.yale.edu/tp/cas">User</cas:lastname>',
         )->documentElement;
         $lastName = new Chunk($lastNameElt);
 
-        /** @var \DOMElement $emailElt */
+        /** @var \Dom\Element $emailElt */
         $emailElt = DOMDocumentFactory::fromString(
             '<cas:email xmlns:cas="http://www.yale.edu/tp/cas">example-user@technolutions.com</cas:email>',
         )->documentElement;
         $email = new Chunk($emailElt);
 
-        /** @var \DOMElement $customAttrElt */
+        /** @var \Dom\Element $customAttrElt */
         $customAttrElt = DOMDocumentFactory::fromString(
             '<slate:custom xmlns:slate="http://technolutions.com/slate">customAttribute</slate:custom>',
         )->documentElement;
@@ -100,7 +100,7 @@ final class AuthenticationSuccessTest extends TestCase
             new Proxy(StringValue::fromString('https://proxy1/pgtUrl')),
         ]);
 
-        /** @var \DOMElement $personElt */
+        /** @var \Dom\Element $personElt */
         $personElt = DOMDocumentFactory::fromString(
             // phpcs:ignore Generic.Files.LineLength
             '<slate:person xmlns:slate="http://technolutions.com/slate">345d2e1b-65de-419c-96ce-e1866d4c57cd</slate:person>',
@@ -108,14 +108,14 @@ final class AuthenticationSuccessTest extends TestCase
 
         $person = new Chunk($personElt);
 
-        /** @var \DOMElement $roundElt */
+        /** @var \Dom\Element $roundElt */
         $roundElt = DOMDocumentFactory::fromString(
             '<slate:round xmlns:slate="http://technolutions.com/slate">Regular Decision</slate:round>',
         )->documentElement;
 
         $round = new Chunk($roundElt);
 
-        /** @var \DOMElement $refElt */
+        /** @var \Dom\Element $refElt */
         $refElt = DOMDocumentFactory::fromString(
             '<slate:ref xmlns:slate="http://technolutions.com/slate">774482874</slate:ref>',
         )->documentElement;
@@ -139,20 +139,20 @@ final class AuthenticationSuccessTest extends TestCase
 
     public function testMarshallingElementOrdering(): void
     {
-        /** @var \DOMElement $firstNameElt */
+        /** @var \Dom\Element $firstNameElt */
         $firstNameElt = DOMDocumentFactory::fromString(
             '<cas:firstname xmlns:cas="http://www.yale.edu/tp/cas">John</cas:firstname>',
         )->documentElement;
 
         $firstName = new Chunk($firstNameElt);
 
-        /** @var \DOMElement $lastNameElt */
+        /** @var \Dom\Element $lastNameElt */
         $lastNameElt = DOMDocumentFactory::fromString(
             '<cas:lastname xmlns:cas="http://www.yale.edu/tp/cas">Doe</cas:lastname>',
         )->documentElement;
         $lastName = new Chunk($lastNameElt);
 
-        /** @var \DOMElement $emailElt */
+        /** @var \Dom\Element $emailElt */
         $emailElt = DOMDocumentFactory::fromString(
             '<cas:email xmlns:cas="http://www.yale.edu/tp/cas">jdoe@example.org</cas:email>',
         )->documentElement;
@@ -170,7 +170,7 @@ final class AuthenticationSuccessTest extends TestCase
             Proxy::fromString('https://proxy1/pgtUrl'),
         ]);
 
-        /** @var \DOMElement $personElt */
+        /** @var \Dom\Element $personElt */
         $personElt = DOMDocumentFactory::fromString(
             // phpcs:ignore Generic.Files.LineLength
             '<slate:person xmlns:slate="http://technolutions.com/slate">345d2e1b-65de-419c-96ce-e1866d4c57cd</slate:person>',
@@ -178,14 +178,14 @@ final class AuthenticationSuccessTest extends TestCase
 
         $person = new Chunk($personElt);
 
-        /** @var \DOMElement $roundElt */
+        /** @var \Dom\Element $roundElt */
         $roundElt = DOMDocumentFactory::fromString(
             '<slate:round xmlns:slate="http://technolutions.com/slate">Regular Decision</slate:round>',
         )->documentElement;
 
         $round = new Chunk($roundElt);
 
-        /** @var \DOMElement $refElt */
+        /** @var \Dom\Element $refElt */
         $refElt = DOMDocumentFactory::fromString(
             '<slate:ref xmlns:slate="http://technolutions.com/slate">774482874</slate:ref>',
         )->documentElement;
@@ -207,7 +207,7 @@ final class AuthenticationSuccessTest extends TestCase
         $this->assertCount(1, $authenticationSuccessElements);
 
         // Test ordering of cas:authenticationSuccess contents
-        /** @var \DOMElement[] $authenticationSuccessElements */
+        /** @var \Dom\Element[] $authenticationSuccessElements */
         $authenticationSuccessElements = XPath::xpQuery(
             $authenticationSuccessElement,
             './cas:user/following-sibling::*',
@@ -236,7 +236,7 @@ final class AuthenticationSuccessTest extends TestCase
             dirname(__FILE__, 3) . '/resources/xml/slate_authenticationSuccess.xml',
         );
 
-        /** @var \DOMElement $element */
+        /** @var \Dom\Element $element */
         $element = $doc->documentElement;
 
         $authenticationSuccess = AuthenticationSuccess::fromXML($element);
@@ -276,7 +276,7 @@ final class AuthenticationSuccessTest extends TestCase
      */
     public function testFromXMLNestedAttributesAreFilteredAndTyped(): void
     {
-        /** @var \DOMElement $element */
+        /** @var \Dom\Element $element */
         $element = self::$xmlRepresentation->documentElement;
 
         $authenticationSuccess = AuthenticationSuccess::fromXML($element);

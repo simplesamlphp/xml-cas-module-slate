@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace SimpleSAML\Slate\Test\XML;
 
-use DOMDocument;
 use PHPUnit\Framework\TestCase;
 use SimpleSAML\Slate\XML\AuthenticationSuccess;
 use SimpleSAML\Slate\XML\ServiceResponse;
+use SimpleSAML\XML\DOMDocumentFactory;
 
 final class ServiceResponseTest extends TestCase
 {
     public function testFromXMLWithAuthenticationSuccessReturnsSlateAuthenticationSuccess(): void
     {
-        $doc = new DOMDocument('1.0', 'UTF-8');
+        $doc = DOMDocumentFactory::create();
 
         // Build <cas:serviceResponse> element with the correct namespace/localName
         $serviceResponseElement = $doc->createElementNS(
@@ -33,8 +33,8 @@ final class ServiceResponseTest extends TestCase
         $userElement = $doc->createElementNS(
             ServiceResponse::getNamespaceURI(),
             'cas:user',
-            'some-user',
         );
+        $userElement->textContent = 'some-user';
         $authSuccessElement->appendChild($userElement);
 
         // Required child: <cas:attributes>...</cas:attributes>
