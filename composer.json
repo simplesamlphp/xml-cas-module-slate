@@ -10,11 +10,11 @@
         }
     ],
     "require": {
-        "php": "^8.3",
+        "php": "^8.5",
         "ext-dom": "*",
 
         "simplesamlphp/xml-cas": "~2.5",
-        "simplesamlphp/xml-common": "~2.8"
+        "simplesamlphp/xml-common": "dev-feature/dom-migration-php84"
     },
     "require-dev": {
         "simplesamlphp/simplesamlphp-test-framework": "~1.11"
