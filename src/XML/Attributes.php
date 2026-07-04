@@ -12,7 +12,7 @@ use SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed;
 use SimpleSAML\XMLSchema\Exception\InvalidDOMElementException;
 use SimpleSAML\XMLSchema\Exception\MissingElementException;
 
-use function array_pop;
+use function array_last;
 
 /**
  * Class for CAS attributes
@@ -65,9 +65,9 @@ final class Attributes extends AbstractAttributes
         );
 
         return new static(
-            array_pop($authenticationDate),
-            array_pop($longTermAuthenticationRequestTokenUsed),
-            array_pop($isFromNewLogin),
+            array_last($authenticationDate),
+            array_last($longTermAuthenticationRequestTokenUsed),
+            array_last($isFromNewLogin),
             self::getChildElementsFromXML($xml),
         );
     }
