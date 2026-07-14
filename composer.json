@@ -10,14 +10,14 @@
         }
     ],
     "require": {
-        "php": "^8.3",
+        "php": "^8.5",
         "ext-dom": "*",
 
-        "simplesamlphp/xml-cas": "~2.5",
-        "simplesamlphp/xml-common": "~2.8"
+        "simplesamlphp/xml-cas": "~3.0",
+        "simplesamlphp/xml-common": "~3.0"
     },
     "require-dev": {
-        "simplesamlphp/simplesamlphp-test-framework": "~1.11"
+        "simplesamlphp/simplesamlphp-test-framework": "~2.0"
     },
     "autoload": {
         "psr-4": {

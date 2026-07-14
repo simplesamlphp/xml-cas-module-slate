@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SimpleSAML\Slate\XML;
 
-use DOMElement;
+use Dom;
 use SimpleSAML\CAS\Assert\Assert;
 use SimpleSAML\CAS\XML\AuthenticationDate;
 use SimpleSAML\CAS\XML\IsFromNewLogin;
@@ -12,7 +12,7 @@ use SimpleSAML\CAS\XML\LongTermAuthenticationRequestTokenUsed;
 use SimpleSAML\XMLSchema\Exception\InvalidDOMElementException;
 use SimpleSAML\XMLSchema\Exception\MissingElementException;
 
-use function array_pop;
+use function array_last;
 
 /**
  * Class for CAS attributes
@@ -27,7 +27,7 @@ final class Attributes extends AbstractAttributes
     /**
      * Convert XML into a cas:attributes-element
      *
-     * @param \DOMElement $xml The XML element we should load
+     * @param \Dom\Element $xml The XML element we should load
      * @return static
      *
      * @throws \SimpleSAML\XMLSchema\Exception\InvalidDOMElementException
@@ -35,7 +35,7 @@ final class Attributes extends AbstractAttributes
      * @throws \SimpleSAML\XMLSchema\Exception\MissingAttributeException
      *   if the supplied element is missing one of the mandatory attributes
      */
-    public static function fromXML(DOMElement $xml): static
+    public static function fromXML(Dom\Element $xml): static
     {
         Assert::same($xml->localName, static::getLocalName(), InvalidDOMElementException::class);
         Assert::same($xml->namespaceURI, static::getNamespaceURI(), InvalidDOMElementException::class);
@@ -65,9 +65,9 @@ final class Attributes extends AbstractAttributes
         );
 
         return new static(
-            array_pop($authenticationDate),
-            array_pop($longTermAuthenticationRequestTokenUsed),
-            array_pop($isFromNewLogin),
+            array_last($authenticationDate),
+            array_last($longTermAuthenticationRequestTokenUsed),
+            array_last($isFromNewLogin),
             self::getChildElementsFromXML($xml),
         );
     }

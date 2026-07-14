@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SimpleSAML\Slate\XML;
 
-use DOMElement;
+use Dom;
 use SimpleSAML\CAS\XML\AbstractCasElement;
 use SimpleSAML\CAS\XML\AuthenticationDate;
 use SimpleSAML\CAS\XML\IsFromNewLogin;
@@ -81,10 +81,10 @@ abstract class AbstractAttributes extends AbstractCasElement
     /**
      * Convert this Attributes to XML.
      *
-     * @param \DOMElement|null $parent The element we should append this Attributes to.
-     * @return \DOMElement
+     * @param \Dom\Element|null $parent The element we should append this Attributes to.
+     * @return \Dom\Element
      */
-    public function toXML(?DOMElement $parent = null): DOMElement
+    public function toXML(?Dom\Element $parent = null): Dom\Element
     {
         $e = $this->instantiateParentElement($parent);
 
