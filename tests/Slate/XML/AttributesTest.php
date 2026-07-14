@@ -59,20 +59,20 @@ final class AttributesTest extends TestCase
         $longTerm = LongTermAuthenticationRequestTokenUsed::fromString('true');
         $isFromNewLogin = IsFromNewLogin::fromString('true');
 
-        /** @var \DOMElement $firstNameElt */
+        /** @var \Dom\Element $firstNameElt */
         $firstNameElt = DOMDocumentFactory::fromString(
             '<cas:firstname xmlns:cas="http://www.yale.edu/tp/cas">Example</cas:firstname>',
         )->documentElement;
 
         $firstName = new Chunk($firstNameElt);
 
-        /** @var \DOMElement $lastNameElt */
+        /** @var \Dom\Element $lastNameElt */
         $lastNameElt = DOMDocumentFactory::fromString(
             '<cas:lastname xmlns:cas="http://www.yale.edu/tp/cas">User</cas:lastname>',
         )->documentElement;
         $lastName = new Chunk($lastNameElt);
 
-        /** @var \DOMElement $emailElt */
+        /** @var \Dom\Element $emailElt */
         $emailElt = DOMDocumentFactory::fromString(
             '<cas:email xmlns:cas="http://www.yale.edu/tp/cas">example-user@technolutions.com</cas:email>',
         )->documentElement;
@@ -82,11 +82,11 @@ final class AttributesTest extends TestCase
             '<cas:myAttribute xmlns:cas="http://www.yale.edu/tp/cas">myValue</cas:myAttribute>',
         );
 
-        /** @var \DOMElement $elt */
+        /** @var \Dom\Element $elt */
         $elt = $document->documentElement;
         $myAttribute = new Chunk($elt);
 
-        /** @var \DOMElement $customAttrElt */
+        /** @var \Dom\Element $customAttrElt */
         $customAttrElt = DOMDocumentFactory::fromString(
             '<slate:custom xmlns:slate="http://technolutions.com/slate">customAttribute</slate:custom>',
         )->documentElement;
@@ -115,7 +115,7 @@ final class AttributesTest extends TestCase
             '<cas:myAttribute xmlns:cas="http://www.yale.edu/tp/cas">myValue</cas:myAttribute>',
         );
 
-        /** @var \DOMElement $elt */
+        /** @var \Dom\Element $elt */
         $elt = $document->documentElement;
         $myAttribute = new Chunk($elt);
         $attributes = new Attributes($authenticationDate, $longTerm, $isFromNewLogin, [$myAttribute]);
@@ -128,7 +128,7 @@ final class AttributesTest extends TestCase
         $this->assertCount(1, $attributesElements);
 
         // Test ordering of cas:attributes contents
-        /** @var \DOMElement[] $attributesElements */
+        /** @var \Dom\Element[] $attributesElements */
         $attributesElements = XPath::xpQuery(
             $attributesElement,
             './cas:authenticationDate/following-sibling::*',
@@ -148,7 +148,7 @@ final class AttributesTest extends TestCase
      */
     public function testFromXMLPopulatesTypedPropertiesAndFiltersStandardChildren(): void
     {
-        /** @var \DOMElement $element */
+        /** @var \Dom\Element $element */
         $element = self::$xmlRepresentation->documentElement;
 
         $attributes = Attributes::fromXML($element);
@@ -193,7 +193,7 @@ final class AttributesTest extends TestCase
 </cas:attributes>
 XML;
 
-        /** @var \DOMElement $element */
+        /** @var \Dom\Element $element */
         $element = DOMDocumentFactory::fromString($xml)->documentElement;
 
         $attributes = Attributes::fromXML($element);
@@ -225,7 +225,7 @@ XML;
 </cas:attributes>
 XML;
 
-        /** @var \DOMElement $element */
+        /** @var \Dom\Element $element */
         $element = DOMDocumentFactory::fromString($xml)->documentElement;
 
         $this->expectException(MissingElementException::class);

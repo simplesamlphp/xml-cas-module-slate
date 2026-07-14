@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SimpleSAML\Slate\XML;
 
-use DOMElement;
+use Dom;
 use SimpleSAML\CAS\Assert\Assert;
 use SimpleSAML\CAS\XML\AbstractServiceResponse;
 use SimpleSAML\CAS\XML\AuthenticationFailure;
@@ -32,7 +32,7 @@ final class ServiceResponse extends AbstractServiceResponse implements SchemaVal
     /**
      * Convert XML into a cas:serviceResponse-element
      *
-     * @param \DOMElement $xml The XML element we should load
+     * @param \Dom\Element $xml The XML element we should load
      * @return static
      *
      * @throws \SimpleSAML\XMLSchema\Exception\InvalidDOMElementException
@@ -40,7 +40,7 @@ final class ServiceResponse extends AbstractServiceResponse implements SchemaVal
      * @throws \SimpleSAML\XMLSchema\Exception\MissingAttributeException
      *   if the supplied element is missing one of the mandatory attributes
      */
-    public static function fromXML(DOMElement $xml): static
+    public static function fromXML(Dom\Element $xml): static
     {
         Assert::same($xml->localName, static::getLocalName(), InvalidDOMElementException::class);
         Assert::same($xml->namespaceURI, static::getNamespaceURI(), InvalidDOMElementException::class);
